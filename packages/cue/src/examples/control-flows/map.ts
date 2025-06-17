@@ -1,6 +1,6 @@
-import { Cue } from '../../../../src/cue';
+import { Cue } from '../../cue';
 import { z } from 'zod';
-import { log, monitorCue } from '../utils/logger';
+import { log, monitorCue } from './utils/logger';
 
 // Create mapping workflow
 const createMappingWorkflow = () => {
