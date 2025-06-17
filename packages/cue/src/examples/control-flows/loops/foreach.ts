@@ -1,11 +1,20 @@
 import { Cue } from '../../../../src/cue';
 import { z } from 'zod';
 import { log, monitorCue } from '../utils/logger';
-import { createLoopBlocks } from '../utils/blocks';
 
 // Create foreach workflow
 const createForEachWorkflow = () => {
-  const { processItemBlock } = createLoopBlocks();
+  // Define block
+  const processItemBlock = Cue.createBlock({
+    id: 'process-item',
+    inputSchema: z.number(),
+    outputSchema: z.number(),
+    execute: async ({ inputData }) => {
+      const result = inputData * 3;
+      log('Process item block executed', { input: inputData, result });
+      return result;
+    },
+  });
 
   const cue = Cue.createCue({
     id: 'foreach-workflow',

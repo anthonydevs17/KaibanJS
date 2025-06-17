@@ -1,11 +1,31 @@
 import { Cue } from '../../../src/cue';
 import { z } from 'zod';
 import { log, monitorCue } from './utils/logger';
-import { createParallelBlocks } from './utils/blocks';
 
 // Create parallel workflow
 const createParallelWorkflow = () => {
-  const { squareBlock, cubeBlock } = createParallelBlocks();
+  // Define blocks
+  const squareBlock = Cue.createBlock({
+    id: 'square',
+    inputSchema: z.number(),
+    outputSchema: z.number(),
+    execute: async ({ inputData }) => {
+      const result = inputData * inputData;
+      log('Square block executed', { input: inputData, result });
+      return result;
+    },
+  });
+
+  const cubeBlock = Cue.createBlock({
+    id: 'cube',
+    inputSchema: z.number(),
+    outputSchema: z.number(),
+    execute: async ({ inputData }) => {
+      const result = inputData * inputData * inputData;
+      log('Cube block executed', { input: inputData, result });
+      return result;
+    },
+  });
 
   const cue = Cue.createCue({
     id: 'parallel-workflow',

@@ -1,11 +1,31 @@
 import { Cue } from '../../../src/cue';
 import { z } from 'zod';
 import { log, monitorCue } from './utils/logger';
-import { createBranchBlocks } from './utils/blocks';
 
 // Create branch workflow
 const createBranchWorkflow = () => {
-  const { greaterThanBlock, lessThanBlock } = createBranchBlocks();
+  // Define blocks
+  const greaterThanBlock = Cue.createBlock({
+    id: 'greater-than',
+    inputSchema: z.number(),
+    outputSchema: z.string(),
+    execute: async ({ inputData }) => {
+      const result = `Number ${inputData} is greater than 10`;
+      log('Greater than block executed', { input: inputData, result });
+      return result;
+    },
+  });
+
+  const lessThanBlock = Cue.createBlock({
+    id: 'less-than',
+    inputSchema: z.number(),
+    outputSchema: z.string(),
+    execute: async ({ inputData }) => {
+      const result = `Number ${inputData} is less than or equal to 10`;
+      log('Less than block executed', { input: inputData, result });
+      return result;
+    },
+  });
 
   const cue = Cue.createCue({
     id: 'branch-workflow',

@@ -1,11 +1,20 @@
 import { Cue } from '../../../../src/cue';
 import { z } from 'zod';
 import { log, monitorCue } from '../utils/logger';
-import { createLoopBlocks } from '../utils/blocks';
 
 // Create do-until workflow
 const createDoUntilWorkflow = () => {
-  const { counterBlock } = createLoopBlocks();
+  // Define block
+  const counterBlock = Cue.createBlock({
+    id: 'counter',
+    inputSchema: z.number(),
+    outputSchema: z.number(),
+    execute: async ({ inputData }) => {
+      const result = inputData + 1;
+      log('Counter block executed', { input: inputData, result });
+      return result;
+    },
+  });
 
   const cue = Cue.createCue({
     id: 'dountil-workflow',
